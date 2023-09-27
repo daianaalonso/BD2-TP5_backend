@@ -76,12 +76,15 @@ public class ProductoServiceJPA implements ProductoService {
             tx.commit();
         } catch (OptimisticLockException o) {
             tx.rollback();
-            throw o;
+            //throw o;
+            throw new RuntimeException("Error de concurrencia: El producto ha sido modificado por otro usuario.");
         } catch (Exception e) {
             tx.rollback();
             if (e.getCause() != null && e.getCause().getClass()
                     .equals(OptimisticLockException.class)) {
-                throw (OptimisticLockException) e.getCause();
+                //throw (OptimisticLockException) e.getCause();
+                throw new RuntimeException("Error de concurrencia: El producto ha sido modificado por otro usuario.");
+
             }
             throw new RuntimeException(e);
         } finally {

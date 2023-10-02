@@ -69,7 +69,7 @@ public class ProductoServiceJPA implements ProductoService {
             p.setCategoria(categoria);
             p.setVersion(version);*/
 
-            Producto productoModificado = new Producto(codigo, descripcion, precio, new Marca(marca), categoria);
+            Producto productoModificado = new Producto(descripcion, codigo, precio, new Marca(marca), categoria);
 
             productoModificado.setId(idProducto);
             productoModificado.setVersion(version);

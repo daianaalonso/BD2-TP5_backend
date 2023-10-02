@@ -18,7 +18,7 @@ public class ProductoVendido {
     private String descripcion;
     private String codigo;
     private Double precio;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @Embedded
     private Marca marca;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Categoria categoria;

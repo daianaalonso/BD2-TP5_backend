@@ -15,16 +15,16 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Version
+    private Long version;
     private String descripcion;
     @Column(unique = true)
     private String codigo;
     private Double precio;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @Embedded
     private Marca marca;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Categoria categoria;
-    @Version
-    private int version;
 
     public Producto(String descripcion, String codigo, Double precio, Marca marca, Categoria categoria) {
         if (esDatoVacio(codigo))
@@ -56,24 +56,7 @@ public class Producto {
         return dato == null;
     }
 
-
-    public boolean suDescripcionEs(String descripcion) {
-        return this.descripcion.equals(descripcion);
-    }
-
-    public boolean suCodigoEs(String codigo) {
-        return this.codigo.equals(codigo);
-    }
-
-    public boolean suPrecioEs(Double precio) {
-        return this.precio.equals(precio);
-    }
-
     public boolean suMarcaEs(String marca) {
         return this.marca.esMarca(marca);
-    }
-
-    public boolean suCategoriaEs(Categoria categoria) {
-        return this.categoria.equals(categoria);
     }
 }

@@ -3,6 +3,7 @@ package ar.unrn.tp;
 import ar.unrn.tp.jpa.servicios.ClienteServiceJPA;
 import ar.unrn.tp.jpa.servicios.ProductoServiceJPA;
 import ar.unrn.tp.jpa.servicios.PromocionServiceJPA;
+import ar.unrn.tp.jpa.servicios.VentaServiceJPA;
 import ar.unrn.tp.modelo.Categoria;
 import ar.unrn.tp.modelo.Marca;
 import jakarta.persistence.EntityManager;
@@ -16,6 +17,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootApplication
 public class DemoApplication {
@@ -31,6 +35,8 @@ public class DemoApplication {
     @Autowired
     PromocionServiceJPA promocionServiceJPA;
     @Autowired
+    VentaServiceJPA ventaServiceJPA;
+    @Autowired
     EntityManagerFactory emf;
 
     private void inTransactionExecute() {
@@ -39,9 +45,7 @@ public class DemoApplication {
         try {
             tx.begin();
             Categoria indumentaria = new Categoria("Indumentaria");
-            Marca nike = new Marca("Nike");
             em.persist(indumentaria);
-            em.persist(nike);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();
@@ -60,10 +64,10 @@ public class DemoApplication {
     }
 
     private void agregarProductos() {
-        productoServiceJPA.crearProducto("1", "Remera", 3000.0, 1L, 1L);
-        productoServiceJPA.crearProducto("2", "Pantalon", 6000.0, 1L, 1L);
-        productoServiceJPA.crearProducto("3", "Campera", 10000.0, 1L, 1L);
-        productoServiceJPA.crearProducto("4", "Jean", 8000.0, 1L, 1L);
+        productoServiceJPA.crearProducto("1", "Remera", 3000.0, 1L, "Nike");
+        productoServiceJPA.crearProducto("2", "Pantalon", 6000.0, 1L, "Nike");
+        productoServiceJPA.crearProducto("3", "Campera", 10000.0, 1L, "Adidas");
+        productoServiceJPA.crearProducto("4", "Jean", 8000.0, 1L, "Adidas");
     }
 
     private void agregarPromociones() {
@@ -80,8 +84,8 @@ public class DemoApplication {
             agregarPromociones();
             agregarCliente();
             agregarProductos();
+            ventaServiceJPA.realizarVenta(1L, new ArrayList<>(Arrays.asList(1L, 2L)), 1L);
+            ventaServiceJPA.realizarVenta(1L, new ArrayList<>(Arrays.asList(1L)), 1L);
         };
     }
-
-
 }
